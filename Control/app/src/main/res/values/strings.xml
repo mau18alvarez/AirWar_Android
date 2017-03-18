@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Controller</string>
+    <string name="act_main_no_acuracy">Sin Suficiente presición</string>
 </resources>
