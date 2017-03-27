@@ -15,8 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
-            android:name=".Sockets"
+            android:name=".Main_Menu"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,12 +28,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape" />
-        <activity
-            android:name=".JoyStick_activity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".Gyroscope_Activity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".ControllerActivy"></activity>
     </application>
 
 </manifest>

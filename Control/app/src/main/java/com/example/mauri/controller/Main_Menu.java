@@ -1,5 +1,6 @@
 package com.example.mauri.controller;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -85,7 +86,12 @@ public class Main_Menu extends AppCompatActivity {
 
                          Joystick.setOnClickListener(new View.OnClickListener(){
                              public void onClick(View view){
-
+                                 Intent intent = new Intent(Main_Menu.this, ControllerActivy.class);
+                                 Bundle b = new Bundle();
+                                 b.putInt("controllerMode", 0); //Your id
+                                 intent.putExtras(b); //Put your id to your next Intent
+                                 startActivity(intent);
+                                 finish();
                              }
                          });
 
@@ -98,7 +104,12 @@ public class Main_Menu extends AppCompatActivity {
 
                          Gyroscope.setOnClickListener(new View.OnClickListener(){
                              public void onClick(View view){
-
+                                 Intent intent = new Intent(Main_Menu.this, ControllerActivy.class);
+                                 Bundle b = new Bundle();
+                                 b.putInt("controllerMode", 1); //Your id
+                                 intent.putExtras(b); //Put your id to your next Intent
+                                 startActivity(intent);
+                                 finish();
                              }
                          });
 
