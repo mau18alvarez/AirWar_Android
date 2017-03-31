@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import static com.example.mauri.controller.R.id.text;
 
 
 public class Main_Menu extends AppCompatActivity {
@@ -51,19 +50,16 @@ public class Main_Menu extends AppCompatActivity {
         setContentView(R.layout.activity_main__menu);
 
         play = (Button) findViewById(R.id.button_play);
-        text = (TextView) findViewById(R.id.airwar_text);
 
          play.setOnClickListener(new View.OnClickListener(){
 
              public void onClick(View view) {
                  play.setVisibility (View.GONE); //Desaparecer el boton Play
-                 text.setVisibility (View.GONE); //Desaparecer el texto
-
                  switch (view.getId()) {
                      case (R.id.button_play):
 
                         //PARA LOS BOTONES
-                         RelativeLayout btn_layout = (RelativeLayout)findViewById(R.id.play_layout);
+                         RelativeLayout btn_layout = (RelativeLayout)findViewById(R.id.layout_menu);
                          RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                          RelativeLayout.LayoutParams params_txt = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                          params.width = 800;
@@ -121,7 +117,6 @@ public class Main_Menu extends AppCompatActivity {
     }
 
     void quitar_botones(){
-        //QUITAR TITULO SUPERIOR DE PANTALLA
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);

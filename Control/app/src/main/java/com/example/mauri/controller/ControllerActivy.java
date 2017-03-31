@@ -5,49 +5,66 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import static java.lang.Math.abs;
 
 public class ControllerActivy extends AppCompatActivity implements SensorEventListener {
 
     int controllerMode = 0;
-
-    /**
-     * Constants for sensors
-     */
-    private static final float SHAKE_THRESHOLD = 1.1f;
-    private static final int SHAKE_WAIT_TIME_MS = 250;
-    private static final float ROTATION_THRESHOLD = 2.0f;
-    private static final int ROTATION_WAIT_TIME_MS = 100;
-
-    /**
-     * Sensors
-     */
+    Button button_shoot;
     private SensorManager mSensorManager;
     private Sensor mSensorAcc;
-    private Sensor mSensorGyr;
-    private long mShakeTime = 0;
-    private long mRotationTime = 0;
-
     RelativeLayout layout_joystick;
     JoyStickClass js;
-    TextView textView1, textView2, textView3, textView4, textView5;
 
     private SocketAsynctask client;
 
+    /**
+     * Funcion para esconder los botones virtuales del movil
+     */
+    private void hideVirtualButtons() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+    }
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            // In KITKAT (4.4) and next releases, hide the virtual buttons
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                hideVirtualButtons();
+            }
+        }
+    }
+
+    /**
+     * On CREATE....Activity
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        quitar_botones();
 
         client = new SocketAsynctask();
         client.port = 9898;
-        client.serverAddress = "192.168.0.18";
+        client.serverAddress = "192.168.1.10";
         client.execute();
 
 
@@ -55,24 +72,25 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
         if(bundle != null){
             this.controllerMode = bundle.getInt("controllerMode");
         }
-
+        /**
+         * ACTIVITY DEL JOYSTICK
+         */
         if(this.controllerMode == 1) {
 
             setContentView(R.layout.activity_joy_stick_activity);
+            button_shoot = (Button) findViewById(R.id.button_shoot2);
 
-
-            textView1 = (TextView)findViewById(R.id.textView1);
-            textView2 = (TextView)findViewById(R.id.textView2);
-            textView3 = (TextView)findViewById(R.id.textView3);
-            textView4 = (TextView)findViewById(R.id.textView4);
-            textView5 = (TextView)findViewById(R.id.textView5);
-
+            //BOTON PARA DISPARAR
+            button_shoot.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    client.changeOrientation("SHOOT");
+                }
+            });
 
             layout_joystick = (RelativeLayout)findViewById(R.id.layout_joystick);
 
             js = new JoyStickClass(getApplicationContext()
-                    , layout_joystick, R.drawable.fondo);
-
+                    , layout_joystick, R.drawable.llitlecircle);
 
             js.setStickSize(200, 200);
             js.setLayoutSize(800, 800);
@@ -86,61 +104,57 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                     js.drawStick(arg1);
                     if (arg1.getAction() == MotionEvent.ACTION_DOWN
                             || arg1.getAction() == MotionEvent.ACTION_MOVE) {
-                        textView1.setText("X : " + String.valueOf(js.getX()));
-                        textView2.setText("Y : " + String.valueOf(js.getY()));
-                        textView3.setText("Angle : " + String.valueOf(js.getAngle()));
-                        textView4.setText("Distance : " + String.valueOf(js.getDistance()));
 
                         int direction = js.get8Direction();
                         if (direction == JoyStickClass.STICK_UP) {
-                            textView5.setText("Direction : Up");
                             client.changeOrientation("UP");
                         } else if (direction == JoyStickClass.STICK_UPRIGHT) {
-                            textView5.setText("Direction : Up Right");
+                            client.changeOrientation("UP");
+                            client.changeOrientation("RIHT");
                         } else if (direction == JoyStickClass.STICK_RIGHT) {
-                            textView5.setText("Direction : Right");
                             client.changeOrientation("RIGHT");
                         } else if (direction == JoyStickClass.STICK_DOWNRIGHT) {
-                            textView5.setText("Direction : Down Right");
+                            client.changeOrientation("DOWN");
+                            client.changeOrientation("RIHT");
                         } else if (direction == JoyStickClass.STICK_DOWN) {
-                            textView5.setText("Direction : Down");
                             client.changeOrientation("DOWN");
                         } else if (direction == JoyStickClass.STICK_DOWNLEFT) {
-                            textView5.setText("Direction : Down Left");
+                            client.changeOrientation("DOWN");
+                            client.changeOrientation("LEFT");
                         } else if (direction == JoyStickClass.STICK_LEFT) {
-                            textView5.setText("Direction : Left");
                             client.changeOrientation("LEFT");
                         } else if (direction == JoyStickClass.STICK_UPLEFT) {
-                            textView5.setText("Direction : Up Left");
+                            client.changeOrientation("UP");
+                            client.changeOrientation("LEFT");
                         } else if (direction == JoyStickClass.STICK_NONE) {
-                            textView5.setText("Direction : Center");
                             client.changeOrientation("CENTER");
                         }
                     } else if (arg1.getAction() == MotionEvent.ACTION_UP) {
 
-                        textView1.setText("X :");
-                        textView2.setText("Y :");
-                        textView3.setText("Angle :");
-                        textView4.setText("Distance :");
-                        textView5.setText("Direction :");
                     }
                     return true;
                 }
             });
-        }else if(this.controllerMode == 0){
-            setContentView(R.layout.activity_gyroscope_);
+            /**
+             * ACTIVITY DEL GIROSCOPIO
+             */
 
-            textView1 = (TextView)findViewById(R.id.gyro_x);
-            textView2 = (TextView)findViewById(R.id.gyro_y);
-            textView3 = (TextView)findViewById(R.id.gyro_z);
+        }else if(this.controllerMode == 0) {
+            setContentView(R.layout.activity_gyroscope_);
+            button_shoot = (Button) findViewById(R.id.button_shoot);
+
+            //BOTON PARA DISPARAR
+            button_shoot.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    client.changeOrientation("SHOOT");
+                }
+            });
+
 
             // Get the sensors to use
             mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
             mSensorAcc = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            mSensorGyr = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-
         }
-
 
 
     }
@@ -149,7 +163,6 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
         super.onResume();
         if(this.controllerMode == 0) {
             mSensorManager.registerListener(this, mSensorAcc, SensorManager.SENSOR_DELAY_NORMAL);
-            mSensorManager.registerListener(this, mSensorGyr, SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
 
@@ -163,89 +176,53 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if(this.controllerMode == 0) {
+        if (this.controllerMode == 0) {
 
             if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE) {
 
                 if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                    textView1.setText(R.string.act_main_no_acuracy);
-                    textView2.setText(R.string.act_main_no_acuracy);
-                    textView3.setText(R.string.act_main_no_acuracy);
+                    Log.d("ACELEROMETRO", "SIN SUFICIENTE EXACTITUD: ");
 
                 }
                 return;
             }
 
             if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                textView1.setText("x = " + Float.toString(event.values[0]));
-                textView2.setText("y = " + Float.toString(event.values[1]));
-                textView3.setText("z = " + Float.toString(event.values[2]));
-                detectShake(event);
-            } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-                detectRotation(event);
-            }
-        }
+                //client.changeOrientation("x = " + Float.toString(event.values[0]));
+                //client.changeOrientation("y = " + Float.toString(event.values[1]));
+                //client.changeOrientation("z = " + Float.toString(event.values[2]));
+                float currentX = event.values[0];
+                float currentY = event.values[1];
 
-    }
-
-    // References:
-    //  - http://jasonmcreynolds.com/?p=388
-    //  - http://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
-
-    /**
-     * Detect a shake based on the ACCELEROMETER sensor
-     *
-     * @param event
-     */
-    private void detectShake(SensorEvent event) {
-        if(this.controllerMode == 0) {
-            long now = System.currentTimeMillis();
-
-            if ((now - mShakeTime) > SHAKE_WAIT_TIME_MS) {
-                mShakeTime = now;
-
-                float gX = event.values[0] / SensorManager.GRAVITY_EARTH;
-                float gY = event.values[1] / SensorManager.GRAVITY_EARTH;
-                float gZ = event.values[2] / SensorManager.GRAVITY_EARTH;
-
-                // gForce will be close to 1 when there is no movement
-                double gForce = Math.sqrt(gX * gX + gY * gY + gZ * gZ);
-
-                // Change background color if gForce exceeds threshold;
-                // otherwise, reset the color
-                //if (gForce > SHAKE_THRESHOLD) {
-                //soundAcc.start();
-            }
-        }
-    }
-
-    /**
-     * Detect a rotation in on the GYROSCOPE sensor
-     *
-     * @param event
-     */
-    private void detectRotation(SensorEvent event) {
-        if(this.controllerMode == 0) {
-            long now = System.currentTimeMillis();
-
-            if ((now - mRotationTime) > ROTATION_WAIT_TIME_MS) {
-                mRotationTime = now;
-
-                // Change background color if rate of rotation around any
-                // axis and in any direction exceeds threshold;
-                // otherwise, reset the color
-                if (Math.abs(event.values[0]) > ROTATION_THRESHOLD ||
-                        Math.abs(event.values[1]) > ROTATION_THRESHOLD ||
-                        Math.abs(event.values[2]) > ROTATION_THRESHOLD) {
-                    // soundGyro.start();
+                    if (currentY > 0.5) {
+                        client.changeOrientation("RIHT");
+                    }
+                    if (currentY < -0.5) {
+                        client.changeOrientation("LEFT");
+                    }
+                    if (currentX < -1) {
+                        client.changeOrientation("UP");
+                    }
+                    if (currentX > 6) {
+                        client.changeOrientation("DOWN");
                 }
             }
         }
     }
 
+
+
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    void quitar_botones(){
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getSupportActionBar().hide();
     }
 
 }

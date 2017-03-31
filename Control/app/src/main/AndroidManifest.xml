@@ -28,7 +28,10 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".ControllerActivy"></activity>
+        <activity
+            android:name=".ControllerActivy"
+            android:screenOrientation="landscape"></activity>
+
     </application>
 
 </manifest>
