@@ -23,6 +23,7 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
 
     int controllerMode = 0;
     Button button_shoot;
+
     private SensorManager mSensorManager;
     private Sensor mSensorAcc;
     RelativeLayout layout_joystick;
@@ -64,7 +65,7 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
 
         client = new SocketAsynctask();
         client.port = 9898;
-        client.serverAddress = "192.168.1.10";
+        client.serverAddress = "192.168.1.19";
         client.execute();
 
 
@@ -72,6 +73,8 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
         if(bundle != null){
             this.controllerMode = bundle.getInt("controllerMode");
         }
+
+
         /**
          * ACTIVITY DEL JOYSTICK
          */
@@ -86,6 +89,8 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                     client.changeOrientation("SHOOT");
                 }
             });
+
+
 
             layout_joystick = (RelativeLayout)findViewById(R.id.layout_joystick);
 
@@ -188,9 +193,6 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
             }
 
             if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                //client.changeOrientation("x = " + Float.toString(event.values[0]));
-                //client.changeOrientation("y = " + Float.toString(event.values[1]));
-                //client.changeOrientation("z = " + Float.toString(event.values[2]));
                 float currentX = event.values[0];
                 float currentY = event.values[1];
 

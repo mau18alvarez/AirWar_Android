@@ -43,10 +43,12 @@ public class SocketAsynctask extends AsyncTask<Void,Integer,Void> {
         while (readyFlag) {
             try {
                 String input = in.readLine();
-                if (input == null) {
-                    continue;
-                } else {
+                if (input != null) {
                     Log.d("message", input);
+
+                } else {
+                    continue;
+
 
 
                 }
@@ -59,7 +61,7 @@ public class SocketAsynctask extends AsyncTask<Void,Integer,Void> {
         return null;
     }
 
-    public void changeOrientation(String orientation) {
+    public String changeOrientation(String orientation) {
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -67,6 +69,7 @@ public class SocketAsynctask extends AsyncTask<Void,Integer,Void> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return orientation;
     }
 }
 
