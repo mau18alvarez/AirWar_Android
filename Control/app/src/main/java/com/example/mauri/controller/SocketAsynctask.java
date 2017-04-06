@@ -44,13 +44,9 @@ public class SocketAsynctask extends AsyncTask<Void,Integer,Void> {
             try {
                 String input = in.readLine();
                 if (input != null) {
-                    Log.d("message", input);
-
+                    Log.d("MESSAGE",input);
                 } else {
                     continue;
-
-
-
                 }
             } catch (Exception e) {
                 readyFlag = false;
@@ -71,5 +67,6 @@ public class SocketAsynctask extends AsyncTask<Void,Integer,Void> {
         }
         return orientation;
     }
+
 }
 

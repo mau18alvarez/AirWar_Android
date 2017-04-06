@@ -30,7 +30,7 @@
         android:layout_marginStart="212dp">
 
         <Button
-            android:id="@+id/button_power1G"
+            android:id="@+id/power1_buttonG"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/power0" />
@@ -45,7 +45,7 @@
         android:layout_toEndOf="@+id/layout_boton1">
 
         <Button
-            android:id="@+id/button_power3G"
+            android:id="@+id/power3_buttonG"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bullet2" />
@@ -60,7 +60,7 @@
         android:layout_toEndOf="@+id/layout_boton1">
 
         <Button
-            android:id="@+id/button_power2G"
+            android:id="@+id/power2_buttonG"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/power0" />

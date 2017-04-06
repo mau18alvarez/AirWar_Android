@@ -16,7 +16,6 @@ import android.widget.TextView;
 public class Main_Menu extends AppCompatActivity {
 
     Button play;
-    TextView text;
 
     //FUNCION PARA ESCONDER LOS BOTONES VIRTUALES DEL CELULAR
     private void hideVirtualButtons() {
@@ -94,7 +93,7 @@ public class Main_Menu extends AppCompatActivity {
 
                          Button Gyroscope = new Button(getApplicationContext());
                          Gyroscope.setBackgroundResource(R.drawable.acceler);
-                         Joystick.setX(1600);
+                         Gyroscope.setX(1600);
                          Gyroscope.setY(650);
                          btn_layout.addView(Gyroscope,params);
 

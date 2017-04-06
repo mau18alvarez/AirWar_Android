@@ -23,7 +23,9 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
 
     int controllerMode = 0;
     Button button_shoot;
-
+    Button power1;
+    Button power2;
+    Button power3;
     private SensorManager mSensorManager;
     private Sensor mSensorAcc;
     RelativeLayout layout_joystick;
@@ -82,6 +84,9 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
 
             setContentView(R.layout.activity_joy_stick_activity);
             button_shoot = (Button) findViewById(R.id.button_shoot2);
+            power1 = (Button) findViewById(R.id.power1_buttonJ);
+            power2 = (Button) findViewById(R.id.power2_buttonJ);
+            power3 = (Button) findViewById(R.id.power3_buttonJ);
 
             //BOTON PARA DISPARAR
             button_shoot.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +94,29 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                     client.changeOrientation("SHOOT");
                 }
             });
+
+            //BOTON POWER 1
+            power1.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    client.changeOrientation("POWER1");
+                }
+            });
+
+            //BOTON POWER 2
+            power2.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    client.changeOrientation("POWER2");
+                }
+            });
+
+            //BOTON POWER 3
+            power3.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    client.changeOrientation("POWER3");
+                }
+            });
+
+
 
 
 
@@ -141,17 +169,42 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                 }
             });
             /**
-             * ACTIVITY DEL GIROSCOPIO
+             * ACTIVITY DEL ACELEROMETRO
              */
 
         }else if(this.controllerMode == 0) {
             setContentView(R.layout.activity_gyroscope_);
             button_shoot = (Button) findViewById(R.id.button_shoot);
+            power1 = (Button) findViewById(R.id.power1_buttonG);
+            power2 = (Button) findViewById(R.id.power2_buttonG);
+            power3 = (Button) findViewById(R.id.power3_buttonG);
+
 
             //BOTON PARA DISPARAR
             button_shoot.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     client.changeOrientation("SHOOT");
+                }
+            });
+
+            //BOTON POWER 1
+            power1.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    client.changeOrientation("POWER1");
+                }
+            });
+
+            //BOTON POWER 2
+            power2.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    client.changeOrientation("POWER2");
+                }
+            });
+
+            //BOTON POWER 3
+            power3.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    client.changeOrientation("POWER3");
                 }
             });
 

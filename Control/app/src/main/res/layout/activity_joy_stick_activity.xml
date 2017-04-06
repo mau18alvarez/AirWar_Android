@@ -14,7 +14,7 @@
         android:layout_toEndOf="@+id/relativeLayout2">
 
         <Button
-            android:id="@+id/power3_button"
+            android:id="@+id/power3_buttonJ"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bullet2"
@@ -30,8 +30,8 @@
         android:layout_toEndOf="@+id/relativeLayout">
 
         <Button
-            android:id="@+id/button_shoot3J"
-            android:layout_width="wrap_content"
+            android:id="@+id/power2_buttonJ"
+            android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </RelativeLayout>
 
