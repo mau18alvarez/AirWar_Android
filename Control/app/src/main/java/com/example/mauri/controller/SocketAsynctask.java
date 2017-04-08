@@ -44,6 +44,7 @@ public class SocketAsynctask extends AsyncTask<Void,Integer,Void> {
             try {
                 String input = in.readLine();
                 if (input != null) {
+                    String_Brain(input);
                     Log.d("MESSAGE",input);
                 } else {
                     continue;
@@ -66,6 +67,19 @@ public class SocketAsynctask extends AsyncTask<Void,Integer,Void> {
             e.printStackTrace();
         }
         return orientation;
+    }
+
+    void String_Brain(String Data){
+        if (Data.equals("ADD_Power1")){
+            Shared_Data.getInstance().power1_quantity +=1;
+            Log.d("power1",String.valueOf(Shared_Data.getInstance().power1_quantity));
+        }
+        if (Data.equals("ADD_Power2")){
+            Shared_Data.getInstance().power2_quantity +=1;
+        }
+        if (Data.equals("ADD_Power3")){
+            Shared_Data.getInstance().power3_quantity +=1;
+        }
     }
 
 }

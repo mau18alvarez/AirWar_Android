@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,14 +23,19 @@ import static java.lang.Math.abs;
 public class ControllerActivy extends AppCompatActivity implements SensorEventListener {
 
     int controllerMode = 0;
-    Button button_shoot;
-    Button power1;
-    Button power2;
-    Button power3;
+    private Button button_shoot;
+    public Button power1;
+    private Button power2;
+    private Button power3;
+    private TextView power1_counter;
+    private TextView power2_counter;
+    private TextView power3_counter;
     private SensorManager mSensorManager;
     private Sensor mSensorAcc;
     RelativeLayout layout_joystick;
     JoyStickClass js;
+    private Handler handler;
+
 
     private SocketAsynctask client;
 
@@ -45,6 +51,7 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -72,7 +79,7 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
 
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
+        if (bundle != null) {
             this.controllerMode = bundle.getInt("controllerMode");
         }
 
@@ -80,13 +87,15 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
         /**
          * ACTIVITY DEL JOYSTICK
          */
-        if(this.controllerMode == 1) {
+        if (this.controllerMode == 1) {
+
 
             setContentView(R.layout.activity_joy_stick_activity);
             button_shoot = (Button) findViewById(R.id.button_shoot2);
             power1 = (Button) findViewById(R.id.power1_buttonJ);
             power2 = (Button) findViewById(R.id.power2_buttonJ);
             power3 = (Button) findViewById(R.id.power3_buttonJ);
+
 
             //BOTON PARA DISPARAR
             button_shoot.setOnClickListener(new View.OnClickListener() {
@@ -95,32 +104,91 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                 }
             });
 
-            //BOTON POWER 1
-            power1.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    client.changeOrientation("POWER1");
-                }
-            });
+            //-----------------------------------------------------------------------------POWER1-----------------------------------------------------------------------------
+            if (Shared_Data.getInstance().power1_quantity > 0) {
 
-            //BOTON POWER 2
-            power2.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    client.changeOrientation("POWER2");
-                }
-            });
+                //BOTON POWER 1
+                power1.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (Shared_Data.getInstance().power1_quantity == 1) {
+                            Shared_Data.getInstance().power1_quantity -= 1;
+                            power1.setVisibility(View.INVISIBLE);
+                            power1_counter.setVisibility(View.GONE);
+                        } else {
+                            Shared_Data.getInstance().power1_quantity -= 1;
+                            client.changeOrientation("USE_POWER1");
+                        }
+                    }
+                });
 
-            //BOTON POWER 3
-            power3.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    client.changeOrientation("POWER3");
-                }
-            });
+                power1_counter = (TextView) findViewById(R.id.badge1);
+                final Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        power1_counter.setText(String.valueOf(Shared_Data.getInstance().power1_quantity));
+                        handler.postDelayed(this, 500); // set time here to refresh textView
+
+                    }
+                });
+            }
+            //--------------------------------------------------------------------------POWER2--------------------------------------------------------------------------------
+            if (Shared_Data.getInstance().power2_quantity > 0) {
+                //BOTON POWER 2
+                power2.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (Shared_Data.getInstance().power2_quantity == 1) {
+                            Shared_Data.getInstance().power2_quantity -= 1;
+                            power2.setVisibility(View.INVISIBLE);
+                            power2_counter.setVisibility(View.GONE);
+
+                        } else {
+                            Shared_Data.getInstance().power2_quantity -= 1;
+                            client.changeOrientation("USE_POWER2");
+                        }
+                    }
+                });
+
+                power2_counter = (TextView) findViewById(R.id.badge2);
+                final Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        power2_counter.setText(String.valueOf(Shared_Data.getInstance().power2_quantity));
+                        handler.postDelayed(this, 500); // set time here to refresh textView
+                    }
+                });
+            }
+
+            //---------------------------------------------------------------------------POWER3-------------------------------------------------------------------------------
+            if (Shared_Data.getInstance().power3_quantity > 0) {
+                //BOTON POWER 3
+                power3.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (Shared_Data.getInstance().power3_quantity == 1) {
+                            Shared_Data.getInstance().power3_quantity -= 1;
+                            power3.setVisibility(View.INVISIBLE);
+                            power3_counter.setVisibility(View.GONE);
+                        } else {
+                            Shared_Data.getInstance().power3_quantity -= 1;
+                            client.changeOrientation("USE_POWER3");
+                        }
+                    }
+                });
+
+                power3_counter = (TextView) findViewById(R.id.badge3);
+                final Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        power3_counter.setText(String.valueOf(Shared_Data.getInstance().power3_quantity));
+                        handler.postDelayed(this, 500); // set time here to refresh textView
+                    }
+                });
+            }
 
 
-
-
-
-            layout_joystick = (RelativeLayout)findViewById(R.id.layout_joystick);
+            layout_joystick = (RelativeLayout) findViewById(R.id.layout_joystick);
 
             js = new JoyStickClass(getApplicationContext()
                     , layout_joystick, R.drawable.llitlecircle);
@@ -134,9 +202,22 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
 
             layout_joystick.setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View arg0, MotionEvent arg1) {
+                    if (Shared_Data.getInstance().power1_quantity > 0) {
+                        power1.setVisibility(View.VISIBLE);
+                        power1_counter.setVisibility(View.VISIBLE);
+                    }
+                    if (Shared_Data.getInstance().power2_quantity > 0) {
+                        power2.setVisibility(View.VISIBLE);
+                        power2_counter.setVisibility(View.VISIBLE);
+                    }
+                    if (Shared_Data.getInstance().power3_quantity > 0) {
+                        power3.setVisibility(View.VISIBLE);
+                        power3_counter.setVisibility(View.VISIBLE);
+                    }
                     js.drawStick(arg1);
                     if (arg1.getAction() == MotionEvent.ACTION_DOWN
                             || arg1.getAction() == MotionEvent.ACTION_MOVE) {
+
 
                         int direction = js.get8Direction();
                         if (direction == JoyStickClass.STICK_UP) {
@@ -168,16 +249,20 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                     return true;
                 }
             });
+
             /**
              * ACTIVITY DEL ACELEROMETRO
              */
 
-        }else if(this.controllerMode == 0) {
+        } else if (this.controllerMode == 0) {
             setContentView(R.layout.activity_gyroscope_);
             button_shoot = (Button) findViewById(R.id.button_shoot);
             power1 = (Button) findViewById(R.id.power1_buttonG);
             power2 = (Button) findViewById(R.id.power2_buttonG);
             power3 = (Button) findViewById(R.id.power3_buttonG);
+            power1_counter = (TextView) findViewById(R.id.badge1);
+            power2_counter = (TextView) findViewById(R.id.badge2);
+            power3_counter = (TextView) findViewById(R.id.badge3);
 
 
             //BOTON PARA DISPARAR
@@ -187,39 +272,118 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                 }
             });
 
-            //BOTON POWER 1
-            power1.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    client.changeOrientation("POWER1");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (Shared_Data.getInstance().power1_quantity > 0) {
+                        Log.d("entro", "si");
+                        power1.setVisibility(View.VISIBLE);
+                        power1_counter.setVisibility(View.VISIBLE);
+                    }
+                    if (Shared_Data.getInstance().power2_quantity > 0) {
+                        power2.setVisibility(View.VISIBLE);
+                        power2_counter.setVisibility(View.VISIBLE);
+                    }
+                    if (Shared_Data.getInstance().power3_quantity > 0) {
+                        power3.setVisibility(View.VISIBLE);
+                        power3_counter.setVisibility(View.VISIBLE);
+                    }
                 }
-            });
+            }, 3000);
 
-            //BOTON POWER 2
-            power2.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    client.changeOrientation("POWER2");
-                }
-            });
+            //-----------------------------------------------------------------------------POWER1-----------------------------------------------------------------------------
+            if (Shared_Data.getInstance().power1_quantity > 0) {
+                //BOTON POWER 1
+                power1.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (Shared_Data.getInstance().power1_quantity == 1) {
+                            Shared_Data.getInstance().power1_quantity -= 1;
+                            power1.setVisibility(View.INVISIBLE);
+                            power1_counter.setVisibility(View.GONE);
+                        } else {
+                            Shared_Data.getInstance().power1_quantity -= 1;
+                            client.changeOrientation("USE_POWER1");
+                        }
+                    }
+                });
 
-            //BOTON POWER 3
-            power3.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    client.changeOrientation("POWER3");
-                }
-            });
+                final Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        power1_counter.setText(String.valueOf(Shared_Data.getInstance().power1_quantity));
+                        handler.postDelayed(this, 500); // set time here to refresh textView
+
+                    }
+                });
+            }
+
+            //--------------------------------------------------------------------------POWER2--------------------------------------------------------------------------------
+            if (Shared_Data.getInstance().power2_quantity > 0) {
+                //BOTON POWER 2
+                power2.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (Shared_Data.getInstance().power2_quantity == 1) {
+                            Shared_Data.getInstance().power2_quantity -= 1;
+                            power2.setVisibility(View.INVISIBLE);
+                            power2_counter.setVisibility(View.GONE);
+
+                        } else {
+                            Shared_Data.getInstance().power1_quantity += 1;
+                            client.changeOrientation("USE_POWER2");
+                        }
+                    }
+                });
+
+                final Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        power2_counter.setText(String.valueOf(Shared_Data.getInstance().power2_quantity));
+                        handler.postDelayed(this, 500); // set time here to refresh textView
+                    }
+                });
+            }
+
+
+            //---------------------------------------------------------------------------POWER3-------------------------------------------------------------------------------
+            if (Shared_Data.getInstance().power3_quantity > 0) {
+                //BOTON POWER 3
+                power3.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (Shared_Data.getInstance().power3_quantity == 1) {
+                            Shared_Data.getInstance().power3_quantity -= 1;
+                            power3.setVisibility(View.INVISIBLE);
+                            power3_counter.setVisibility(View.GONE);
+                        } else {
+                            Shared_Data.getInstance().power3_quantity -= 1;
+                            client.changeOrientation("USE_POWER3");
+                        }
+                    }
+                });
+
+                final Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        power3_counter.setText(String.valueOf(Shared_Data.getInstance().power3_quantity));
+                        handler.postDelayed(this, 500); // set time here to refresh textView
+                    }
+                });
+            }
 
 
             // Get the sensors to use
             mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
             mSensorAcc = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
-
-
     }
+
+
     @Override
     protected void onResume() {
         super.onResume();
-        if(this.controllerMode == 0) {
+        if (this.controllerMode == 0) {
             mSensorManager.registerListener(this, mSensorAcc, SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
@@ -227,13 +391,26 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
     @Override
     protected void onPause() {
         super.onPause();
-        if(this.controllerMode == 0) {
+        if (this.controllerMode == 0) {
             mSensorManager.unregisterListener(this);
         }
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (Shared_Data.getInstance().power1_quantity > 0) {
+            power1.setVisibility(View.VISIBLE);
+            power1_counter.setVisibility(View.VISIBLE);
+        }
+        if (Shared_Data.getInstance().power2_quantity > 0) {
+            power2.setVisibility(View.VISIBLE);
+            power2_counter.setVisibility(View.VISIBLE);
+        }
+        if (Shared_Data.getInstance().power3_quantity > 0) {
+            power3.setVisibility(View.VISIBLE);
+            power3_counter.setVisibility(View.VISIBLE);
+        }
+
         if (this.controllerMode == 0) {
 
             if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE) {
@@ -249,23 +426,21 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                 float currentX = event.values[0];
                 float currentY = event.values[1];
 
-                    if (currentY > 0.5) {
-                        client.changeOrientation("RIHT");
-                    }
-                    if (currentY < -0.5) {
-                        client.changeOrientation("LEFT");
-                    }
-                    if (currentX < -1) {
-                        client.changeOrientation("UP");
-                    }
-                    if (currentX > 6) {
-                        client.changeOrientation("DOWN");
+                if (currentY > 0.5) {
+                    client.changeOrientation("RIHT");
+                }
+                if (currentY < -0.5) {
+                    client.changeOrientation("LEFT");
+                }
+                if (currentX < -1) {
+                    client.changeOrientation("UP");
+                }
+                if (currentX > 6) {
+                    client.changeOrientation("DOWN");
                 }
             }
         }
     }
-
-
 
 
     @Override
@@ -273,11 +448,11 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
 
     }
 
-    void quitar_botones(){
+
+    void quitar_botones() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
     }
-
 }

@@ -10,8 +10,8 @@
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="26dp"
-        android:layout_toEndOf="@+id/relativeLayout2">
+        android:layout_toEndOf="@+id/relativeLayout2"
+        android:layout_marginStart="9dp">
 
         <Button
             android:id="@+id/power3_buttonJ"
@@ -25,23 +25,24 @@
         android:id="@+id/relativeLayout2"
         android:layout_width="90dp"
         android:layout_height="90dp"
+        android:layout_marginEnd="29dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="42dp"
-        android:layout_toEndOf="@+id/relativeLayout">
+        android:layout_toStartOf="@+id/layout_joystick">
 
         <Button
             android:id="@+id/power2_buttonJ"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@drawable/bomb" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="90dp"
         android:layout_height="90dp"
+        android:layout_marginEnd="119dp"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="167dp"
-        android:layout_toStartOf="@+id/layout_joystick">
+        android:layout_alignEnd="@+id/relativeLayout2">
 
         <Button
             android:id="@+id/power1_buttonJ"
@@ -54,9 +55,10 @@
     <RelativeLayout
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/relativeLayout">
+        android:id="@+id/relativeLayout"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_alignParentStart="true">
+
 
         <Button
             android:id="@+id/button_shoot2"
@@ -78,5 +80,47 @@
         android:background="@drawable/bigcircle"
         android:visibility="visible"
         tools:ignore="RtlHardcoded"></RelativeLayout>
+
+    <TextView
+        android:id="@+id/badge3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="6dp"
+        android:layout_marginStart="510dp"
+        android:background="@drawable/item_count"
+        android:focusable="false"
+        android:textColor="#FFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText,RelativeOverlap,RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/badge1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="6dp"
+        android:layout_marginStart="265dp"
+        android:background="@drawable/item_count"
+        android:focusable="false"
+        android:textColor="#FFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText,RelativeOverlap,RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/badge2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="6dp"
+        android:layout_marginStart="385dp"
+        android:background="@drawable/item_count"
+        android:focusable="false"
+        android:textColor="#FFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText,RelativeOverlap,RtlHardcoded" />
 
 </RelativeLayout>
