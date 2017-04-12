@@ -122,7 +122,7 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                             power1_counter.setVisibility(View.GONE);
                         } else {
                             Shared_Data.getInstance().power1_quantity -= 1;
-                            client.changeOrientation("USE_Power1");
+                            client.changeOrientation("USE_Power0");
                         }
                     }
                 });
@@ -148,7 +148,7 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
 
                         } else {
                             Shared_Data.getInstance().power2_quantity -= 1;
-                            client.changeOrientation("USE_Power2");
+                            client.changeOrientation("USE_Power1");
                         }
                     }
                 });
@@ -170,7 +170,7 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                             power3_counter.setVisibility(View.GONE);
                         } else {
                             Shared_Data.getInstance().power3_quantity -= 1;
-                            client.changeOrientation("USE_Power3");
+                            client.changeOrientation("USE_Power2");
                         }
                     }
                 });
@@ -304,7 +304,7 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                             power1_counter.setVisibility(View.GONE);
                         } else {
                             Shared_Data.getInstance().power1_quantity -= 1;
-                            client.changeOrientation("USE_Power1");
+                            client.changeOrientation("USE_Power0");
                         }
                     }
                 });
@@ -329,7 +329,7 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
 
                         } else {
                             Shared_Data.getInstance().power2_quantity -= 1;
-                            client.changeOrientation("USE_Power2");
+                            client.changeOrientation("USE_Power1");
                         }
                     }
                 });
@@ -351,7 +351,7 @@ public class ControllerActivy extends AppCompatActivity implements SensorEventLi
                             power3_counter.setVisibility(View.GONE);
                         } else {
                             Shared_Data.getInstance().power3_quantity -= 1;
-                            client.changeOrientation("USE_Power3");
+                            client.changeOrientation("USE_Power2");
                         }
                     }
                 });
