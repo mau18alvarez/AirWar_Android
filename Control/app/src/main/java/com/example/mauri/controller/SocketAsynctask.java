@@ -62,6 +62,7 @@ public class SocketAsynctask extends AsyncTask<Void,Integer,Void> {
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
+            Log.d("output",orientation);
             out.println(orientation);
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,14 +71,14 @@ public class SocketAsynctask extends AsyncTask<Void,Integer,Void> {
     }
 
     void String_Brain(String Data){
-        if (Data.equals("ADD_Power1")){
+        if (Data.equals("ADD_Power0")){
             Shared_Data.getInstance().power1_quantity +=1;
             Log.d("power1",String.valueOf(Shared_Data.getInstance().power1_quantity));
         }
-        if (Data.equals("ADD_Power2")){
+        if (Data.equals("ADD_Power1")){
             Shared_Data.getInstance().power2_quantity +=1;
         }
-        if (Data.equals("ADD_Power3")){
+        if (Data.equals("ADD_Power2")){
             Shared_Data.getInstance().power3_quantity +=1;
         }
     }
