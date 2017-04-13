@@ -12,7 +12,7 @@ public class Shared_Data {
     public int power1_quantity = 0;
     public int power2_quantity = 0;
     public int power3_quantity = 0;
-    public boolean endgame = false;
+    public boolean end_game = false;
 
 
     private void Shared_Data (){
